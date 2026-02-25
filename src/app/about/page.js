@@ -7,39 +7,35 @@ import styles from "./about.module.css";
 export default function About() {
     const experiences = [
         {
-            role: "Senior Frontend Developer",
-            company: "Tech Innovations Inc.",
-            duration: "2022 - Present",
+            role: "Frontend Developer",
+            company: "AntroSys",
+            duration: "Dec 2025 – Present · Full-time · Hybrid",
         },
         {
-            role: "Full Stack Engineer",
-            company: "Creative Digital Agency",
-            duration: "2020 - 2022",
-        },
-        {
-            role: "Junior Web Developer",
-            company: "Startup Hub",
-            duration: "2018 - 2020",
+            role: "Chief Information Security Officer",
+            company: "Invantros",
+            duration: "Nov 2025 – Present · Part-time · Hybrid",
         },
     ];
 
     const education = [
         {
-            degree: "B.Sc. in Computer Science",
-            school: "Metropolitan University",
-            year: "2018",
+            degree: "B.Sc. in Artificial Intelligence",
+            school: "NASTP Institute of Information Technology",
+            year: "2024 – 2028",
         },
         {
-            degree: "UX Design Certification",
-            school: "Design Academy",
-            year: "2019",
+            degree: "Intermediate, Computer Science",
+            school: "Forman Christian College (A Chartered University)",
+            year: "Sep 2022 – Jul 2024",
         },
     ];
 
+
     const skills = [
         "Next.js", "React", "JavaScript", "Node.js",
-        "Tailwind CSS", "Framer Motion", "UI/UX Design",
-        "PostgreSQL", "Git", "Figma"
+        "Frontend Development", "UI/UX Design",
+        "Information Security", "Figma", "Git", "CSS"
     ];
 
     return (
@@ -53,22 +49,22 @@ export default function About() {
                 <div className={styles.imageWrapper}>
                     <Image
                         src="/profile.jpg"
-                        alt="Professional Portrait"
+                        alt="Hasnain — Professional Portrait"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: "cover", objectPosition: "top center" }}
                     />
                 </div>
                 <div className={styles.whoIAm}>
                     <h1>Who I Am</h1>
                     <p>
-                        I'm a passionate developer based in your location, driven by the challenge
-                        of bringing complex ideas to life through elegant code and intuitive design.
+                        I'm a passionate frontend developer and AI student based in Pakistan,
+                        driven by the challenge of bringing complex ideas to life through
+                        elegant code and intuitive design.
                     </p>
                     <p>
-                        Beyond coding, I have a deep interest in minimalist architecture,
-                        generative art, and exploring the intersection between technology
-                        and human behavior. I believe that great software is as much about
-                        empathy as it is about efficiency.
+                        Beyond coding, I have a deep interest in cybersecurity, generative AI,
+                        and the intersection between technology and human behavior. I believe
+                        that great software is as much about empathy as it is about efficiency.
                     </p>
                 </div>
             </motion.section>
