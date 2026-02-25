@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import styles from "./Navigation.module.css";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -15,29 +15,22 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-8 py-4 flex justify-between items-center">
-      <div className="text-xl font-bold tracking-tight text-[#053C5E]">
-        <Link href="/">PORTFOLIO</Link>
-      </div>
-      <div className="flex gap-8">
+    <nav className={styles.nav}>
+      <Link href="/" className={styles.logo}>
+        Portfolio
+      </Link>
+      <ul className={styles.links}>
         {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`text-sm font-medium transition-colors hover:text-[#D3B88C] ${
-              pathname === link.href ? "text-[#D3B88C]" : "text-gray-600"
-            }`}
-          >
-            {link.name}
-            {pathname === link.href && (
-              <motion.div
-                layoutId="underline"
-                className="h-0.5 bg-[#D3B88C] mt-0.5"
-              />
-            )}
-          </Link>
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
+            >
+              {link.name}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </nav>
   );
 };
