@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, MessageSquare } from "lucide-react";
+import { Mail, Linkedin, Phone } from "lucide-react";
 import styles from "./contact.module.css";
 
 export default function Contact() {
@@ -32,23 +32,28 @@ export default function Contact() {
                     </p>
 
                     <div className={styles.socialLinks}>
-                        <a href="mailto:hello@hasnain.dev" className={styles.socialLink}>
+                        <a href="mailto:hasnainimran2005@gmail.com" className={styles.socialLink}>
                             <div className={styles.iconWrapper}>
                                 <Mail size={20} />
                             </div>
-                            hello@hasnain.dev
+                            hasnainimran2005@gmail.com
                         </a>
-                        <a href="#" className={styles.socialLink}>
+                        <a
+                            href="https://www.linkedin.com/in/hasnain-imran-086853340/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                        >
                             <div className={styles.iconWrapper}>
                                 <Linkedin size={20} />
                             </div>
                             LinkedIn Profile
                         </a>
-                        <a href="#" className={styles.socialLink}>
+                        <a href="tel:+923061202874" className={styles.socialLink}>
                             <div className={styles.iconWrapper}>
-                                <Github size={20} />
+                                <Phone size={20} />
                             </div>
-                            GitHub Repository
+                            +92 306 120 2874
                         </a>
                     </div>
                 </motion.div>

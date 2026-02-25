@@ -17,7 +17,7 @@ const Navigation = () => {
   return (
     <nav className={styles.nav}>
       <Link href="/" className={styles.logo}>
-        Portfolio
+        Hasnain Imran
       </Link>
       <ul className={styles.links}>
         {links.map((link) => (
