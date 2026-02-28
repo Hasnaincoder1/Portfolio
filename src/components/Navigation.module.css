@@ -33,8 +33,65 @@
     opacity: 0.8;
 }
 
-.links {
+.menuBtn {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #e6edf3;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0.5rem;
+}
+
+.menuBtn:hover {
+    color: #D3B88C;
+}
+
+/* Fullscreen Menu Overlay */
+.menuOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0d1117;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+}
+
+.menuHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    height: 70px;
+    border-bottom: 1px solid #21262d;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeBtn:hover {
+    color: #ff6b6b;
+    transform: rotate(90deg);
+}
+
+.menuLinks {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 2.5rem;
     list-style: none;
@@ -42,47 +99,38 @@
     padding: 0;
 }
 
-.link {
-    position: relative;
-    font-size: 0.9rem;
-    font-weight: 500;
+.menuLink {
+    font-size: 2.5rem;
+    font-weight: 700;
     color: #8b949e;
     text-decoration: none;
-    letter-spacing: 0.03em;
-    transition: color 0.25s ease;
-    padding: 0.25rem 0;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: block;
 }
 
-.link:hover {
+.menuLink:hover {
     color: #e6edf3;
+    transform: scale(1.05);
 }
 
-.linkActive {
+.menuLinkActive {
     color: #D3B88C;
 }
 
-.linkActive::after {
-    content: "";
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #D3B88C;
-    border-radius: 2px;
-}
-
 @media (max-width: 640px) {
-    .nav {
+
+    .nav,
+    .menuHeader {
         padding: 0 1.25rem;
         height: 60px;
     }
 
-    .links {
-        gap: 1.25rem;
-    }
-
     .logo {
         font-size: 1rem;
+    }
+
+    .menuLink {
+        font-size: 2rem;
     }
 }

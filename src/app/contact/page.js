@@ -14,7 +14,7 @@ export default function Contact() {
             >
                 <h1 className={styles.title}>Let's Connect</h1>
                 <p className={styles.subtitle}>
-                    Have a project in mind or just want to say hello? I'd love to hear from you.
+                    Whether it&apos;s a big idea or just a hello — reach out, I&apos;d love to connect.
                 </p>
             </motion.div>
 
@@ -58,29 +58,33 @@ export default function Contact() {
                     </div>
                 </motion.div>
 
-                <motion.form
-                    className={styles.form}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                <motion.div
+                    className={styles.formCard}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
-                    onSubmit={(e) => e.preventDefault()}
                 >
-                    <div className={styles.group}>
-                        <label htmlFor="name">Full Name</label>
-                        <input type="text" id="name" className={styles.input} placeholder="John Doe" required />
-                    </div>
-                    <div className={styles.group}>
-                        <label htmlFor="email">Email Address</label>
-                        <input type="email" id="email" className={styles.input} placeholder="john@example.com" required />
-                    </div>
-                    <div className={styles.group}>
-                        <label htmlFor="message">Your Message</label>
-                        <textarea id="message" className={styles.textarea} placeholder="How can I help you?" required></textarea>
-                    </div>
-                    <button type="submit" className={styles.submitBtn}>
-                        Send Message
-                    </button>
-                </motion.form>
+                    <form
+                        className={styles.form}
+                        onSubmit={(e) => e.preventDefault()}
+                    >
+                        <div className={styles.group}>
+                            <label htmlFor="name">Full Name</label>
+                            <input type="text" id="name" className={styles.input} placeholder="" required />
+                        </div>
+                        <div className={styles.group}>
+                            <label htmlFor="email">Email Address</label>
+                            <input type="email" id="email" className={styles.input} placeholder="" required />
+                        </div>
+                        <div className={styles.group}>
+                            <label htmlFor="message">Your Message</label>
+                            <textarea id="message" className={styles.textarea} placeholder="" required></textarea>
+                        </div>
+                        <button type="submit" className={styles.submitBtn}>
+                            Send Message
+                        </button>
+                    </form>
+                </motion.div>
             </div>
         </div>
     );

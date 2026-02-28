@@ -33,11 +33,16 @@
     color: #D3B88C;
 }
 
-.whoIAm p {
+.whoIAm p,
+.splitText {
     font-size: 1.1rem;
     color: #8b949e;
     margin-bottom: 1rem;
     line-height: 1.7;
+}
+
+.word {
+    display: inline-block;
 }
 
 .section {
@@ -104,6 +109,41 @@
     border-color: #D3B88C;
 }
 
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.logoBox {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding: 4px;
+}
+
+.logoFallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1c2128;
+    color: #D3B88C;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+}
+
 .role {
     font-weight: 700;
     font-size: 1.2rem;
@@ -122,25 +162,73 @@
     color: #6e7681;
 }
 
-.skillsGrid {
+.skillsGridNew {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.skillCard {
+    background: #111418;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #30363d;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.skillCard:hover {
+    transform: translateY(-3px);
+    border-color: #D3B88C;
+}
+
+.skillHeader {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.skillNameGroup {
+    display: flex;
+    align-items: center;
     gap: 0.75rem;
 }
 
-.skillTag {
-    background: #161b22;
-    border: 1px solid #D3B88C55;
-    color: #D3B88C;
-    padding: 0.4rem 1.1rem;
-    border-radius: 100px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background 0.3s ease;
+.skillIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #1c2128;
+    border-radius: 8px;
+    font-size: 1.1rem;
 }
 
-.skillTag:hover {
-    background: #D3B88C22;
+.skillName {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #e6edf3;
+}
+
+.skillPercent {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #D3B88C;
+}
+
+.progressTrack {
+    height: 6px;
+    background: #21262d;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    background: linear-gradient(90deg, #D3B88C, #e8d3a2);
+    border-radius: 4px;
 }
 
 @media (max-width: 768px) {

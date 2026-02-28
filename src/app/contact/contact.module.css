@@ -78,6 +78,14 @@
     border-color: #D3B88C;
 }
 
+.formCard {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
 .form {
     display: flex;
     flex-direction: column;
