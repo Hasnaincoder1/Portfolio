@@ -4,8 +4,8 @@
   position: relative;
   min-height: 200vh;
   /* Extra height to allow scrolling for parallax */
-  background-color: #0a0a0a;
-  color: #f0f0f0;
+  background-color: #000000;
+  color: #ffffff;
   overflow-x: hidden;
 }
 
@@ -18,7 +18,7 @@
   height: 100vh;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.03;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
@@ -29,8 +29,17 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background: radial-gradient(circle at center, #111111 0%, #0a0a0a 100%);
+  background: #000000;
   z-index: 0;
+}
+
+.splineContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  opacity: 0.6;
 }
 
 .main {
@@ -51,30 +60,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Center layout as requested, easily switched to flex-start */
+  /* Center layout */
   text-align: center;
   max-width: 1200px;
   width: 100%;
+  pointer-events: none; /* Allows Spline to be interactive if desired */
 }
 
 .name {
   font-family: var(--font-outfit), "Inter", sans-serif;
   font-weight: 200;
-  /* Thin look */
+  /* Thin sans-serif */
   letter-spacing: -0.02em;
-  color: #f0f0f0;
-  margin: 0 0 1rem 0;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
   line-height: 1.1;
-  /* Responsive font sizing between 4rem and 8rem */
-  font-size: clamp(4rem, 8vw, 8rem);
+  /* Very large typography */
+  font-size: clamp(4rem, 10vw, 9rem);
+  text-transform: uppercase;
 }
 
 .tagline {
   font-family: var(--font-geist-sans), sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #888888;
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  letter-spacing: 0.05em;
+  /* Small, spaced-out letters */
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
   max-width: 600px;
   margin: 0;
 }
@@ -87,38 +100,365 @@
   transform: translateX(-50%);
   display: flex;
   justify-content: center;
-  height: 80px;
+  align-items: center;
+  height: 40px;
+  color: #ffffff;
+  opacity: 0.7;
+  animation: bounceScroll 2s infinite ease-in-out;
 }
 
-.scrollLine {
-  width: 1px;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 0%, #888888 50%, transparent 100%);
-  animation: pulse Scroll 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes pulseScroll {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0;
+@keyframes bounceScroll {
+  0%, 100% {
+    transform: translate(-50%, 0);
   }
-
   50% {
-    transform: scaleY(1);
-    transform-origin: top;
-    opacity: 1;
+    transform: translate(-50%, 10px);
   }
+}
 
-  50.1% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-    opacity: 1;
+/* ===== MARQUEE TICKER STRIP ===== */
+.tickerSection {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  background-color: #111111; /* Dark charcoal/off-black */
+  padding: 1.5rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tickerContainer {
+  display: flex;
+  width: max-content;
+}
+
+.tickerContent {
+  display: flex;
+  white-space: nowrap;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-right: 1rem;
+  animation: scrollMarquee 25s linear infinite;
+}
+
+/* Slight slow down on hover */
+.tickerContainer:hover .tickerContent {
+  animation-play-state: running;
+  /* Alternatively, you can change animation duration on hover to slow it down */
+  animation: scrollMarquee 45s linear infinite; 
+}
+
+@keyframes scrollMarquee {
+  0% {
+    transform: translateX(0);
   }
-
   100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-    opacity: 0;
+    transform: translateX(-100%);
   }
+}
+
+/* ===== STATEMENT SECTION ===== */
+.statementSection {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  min-height: 80vh; /* Lots of negative space around it */
+  background-color: transparent; /* Inherits #000000 from the page base */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.statementText {
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 1.1;
+  text-align: center;
+  max-width: 90%;
+  /* Takes up most of the screen width */
+  margin: 0 auto;
+  letter-spacing: -0.02em;
+}
+
+.statementWord {
+  display: inline-block;
+  white-space: pre; 
+  /* Allows space between words when mapped as individual spans */
+  margin-right: 0.25em;
+}
+
+/* ===== SHARED SECTIONS ===== */
+.sectionHeader {
+  max-width: 1400px;
+  margin: 0 auto 6rem auto;
+}
+
+.sectionTitle {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #888888;
+  margin: 0;
+}
+
+/* ===== FEATURED WORK SECTION ===== */
+.workSection {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  padding: 8rem 2rem 8rem 2rem;
+  background-color: #000000;
+}
+
+.workGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem; /* Large gaps between stacked items */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Single Project Card layout */
+.projectCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .projectCard {
+    grid-template-columns: 60% 40%;
+    gap: 5rem;
+  }
+  
+  .projectCardEven {
+    grid-template-areas: "image text";
+  }
+  
+  .projectCardOdd {
+    grid-template-areas: "text image";
+    grid-template-columns: 40% 60%;
+  }
+
+  .projectCardEven .projectImageWrapper { grid-area: image; }
+  .projectCardEven .projectDetails     { grid-area: text; }
+  
+  .projectCardOdd .projectImageWrapper { grid-area: image; }
+  .projectCardOdd .projectDetails     { grid-area: text; }
+}
+
+.projectImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #111111;
+}
+
+.projectImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.4s ease;
+  z-index: 2;
+}
+
+.overlayText {
+  color: #000000;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  background-color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover Effects on image */
+.projectImageWrapper:hover .projectImagePlaceholder {
+  transform: scale(1.05);
+}
+
+.projectImageWrapper:hover .imageOverlay {
+  background-color: rgba(255, 255, 255, 0.1); /* Soft white overlay */
+  backdrop-filter: blur(2px);
+}
+
+.projectImageWrapper:hover .overlayText {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text Details Side */
+.projectDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.projectName {
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 300;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.projectDescription {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1.1rem;
+  color: #888888;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  max-width: 90%;
+}
+
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.projectLink:hover {
+  border-bottom-color: #ffffff;
+  gap: 0.75rem; /* slight arrow push */
+}
+
+/* ===== SERVICES SECTION ===== */
+.servicesSection {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  padding: 8rem 2rem 10rem 2rem;
+  background-color: #000000;
+}
+
+.servicesList {
+  display: flex;
+  flex-direction: column;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Service Row Layout */
+.serviceRow {
+  position: relative;
+  width: 100%;
+  padding: 3rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  cursor: default;
+}
+
+/* The first row should also have a top border to box them in nicely */
+.serviceRow:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Background fill for hover animation */
+.serviceHoverBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  transform: translateX(-101%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.serviceContent {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 2rem;
+  align-items: center;
+  transition: color 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .serviceContent {
+    grid-template-columns: 100px 1fr 300px;
+  }
+}
+
+.serviceNumber {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #888888;
+  transition: color 0.4s ease;
+}
+
+.serviceName {
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  margin: 0;
+  letter-spacing: -0.02em;
+  transition: color 0.4s ease;
+}
+
+.serviceDescription {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1rem;
+  color: #888888;
+  opacity: 0.8;
+  transition: color 0.4s ease;
+  line-height: 1.5;
+}
+
+/* Hover State Changes */
+.serviceRow:hover .serviceHoverBg {
+  transform: translateX(0);
+}
+
+.serviceRow:hover .serviceContent {
+  color: #000000;
+}
+
+.serviceRow:hover .serviceNumber,
+.serviceRow:hover .serviceName,
+.serviceRow:hover .serviceDescription {
+  color: #000000;
 }

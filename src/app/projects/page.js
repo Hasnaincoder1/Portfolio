@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { ArrowRight } from "lucide-react";
+import Footer from "@/components/Footer";
+import SectionDivider from "@/components/SectionDivider";
 import styles from "./projects.module.css";
 
 const haufScreenshots = [
@@ -199,6 +203,131 @@ function ProjectModal({ project, onClose }) {
     );
 }
 
+// Reusable word-by-word animation component
+function SplitText({ children, delayOffset = 0, className = "" }) {
+    const text = typeof children === "string" ? children : "";
+    const words = text.split(" ");
+
+    return (
+        <span className={styles.splitTextContainer}>
+            {words.map((word, i) => (
+                <span key={i} className={styles.wordWrapper}>
+                    <motion.span
+                        initial={{ opacity: 0, y: "100%" }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                            duration: 0.6,
+                            delay: delayOffset + i * 0.05,
+                            ease: [0.2, 0.65, 0.3, 0.9],
+                        }}
+                        className={`${styles.word} ${className}`}
+                    >
+                        {word}&nbsp;
+                    </motion.span>
+                </span>
+            ))}
+        </span>
+    );
+}
+
+function FeaturedCaseStudy({ project, onView }) {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+
+    return (
+        <section 
+            ref={containerRef}
+            className={styles.featuredBanner}
+            onClick={onView}
+        >
+            <motion.div 
+                className={styles.featuredBgBase}
+                style={{ y }}
+            >
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </motion.div>
+            
+            <div className={styles.featuredOverlay} />
+            
+            <div className={styles.featuredContent}>
+                <div className={styles.featuredLeft}>
+                    <motion.span 
+                        className={styles.featuredLabel}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        Featured Project
+                    </motion.span>
+                    <motion.h2 
+                        className={styles.featuredTitle}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.1 }}
+                    >
+                        {project.title}
+                    </motion.h2>
+                    <motion.p 
+                        className={styles.featuredDesc}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        {project.description}
+                    </motion.p>
+                    <div className={styles.featuredTags}>
+                        {project.tech.map((t, i) => (
+                            <motion.span 
+                                key={i} 
+                                className={styles.featuredTag}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
+                            >
+                                {t}
+                            </motion.span>
+                        ))}
+                    </div>
+                </div>
+                
+                <div className={styles.featuredRight}>
+                    <motion.button 
+                        className={styles.featuredBtn}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onView();
+                        }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        View Case Study
+                    </motion.button>
+                </div>
+            </div>
+        </section>
+    );
+}
+
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProject, setSelectedProject] = useState(null);
@@ -208,71 +337,135 @@ export default function Projects() {
         : projects.filter(p => p.category === activeFilter);
 
     return (
+        <>
         <div className={styles.page}>
-            <motion.div
-                className={styles.header}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-            >
-                <h1>Selected Work</h1>
-                <p>A collection of projects that define my technical journey.</p>
-            </motion.div>
+            <section className={styles.headerSection}>
+                <span className={styles.bgNumberHeader}>05</span>
+                <div className={styles.headerContent}>
+                    <h1 className={styles.hugeHeading}>
+                        <SplitText>Selected Work</SplitText>
+                    </h1>
+                    <p className={styles.headerSubtext}>
+                        <motion.span
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                        >
+                            A collection of projects that define my technical journey.
+                        </motion.span>
+                    </p>
+                </div>
+                <motion.div 
+                    className={styles.headingLine}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1, ease: "easeInOut", delay: 0.4 }}
+                    style={{ transformOrigin: "left" }}
+                />
+            </section>
 
-            <div className={styles.filters}>
-                {categories.map(cat => (
-                    <button
-                        key={cat}
-                        className={`${styles.filterBtn} ${activeFilter === cat ? styles.activeFilter : ""}`}
-                        onClick={() => setActiveFilter(cat)}
-                    >
-                        {cat}
-                    </button>
-                ))}
+            <SectionDivider />
+
+            <div className={styles.filtersWrapper}>
+                <div className={styles.filters}>
+                    {categories.map(cat => (
+                        <button
+                            key={cat}
+                            className={`${styles.filterBtn} ${activeFilter === cat ? styles.activeFilter : ""}`}
+                            onClick={() => setActiveFilter(cat)}
+                        >
+                            <span className={styles.filterText}>{cat}</span>
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            <motion.div className={styles.grid} layout>
-                <AnimatePresence mode="popLayout">
-                    {filteredProjects.map((project) => (
+            <SectionDivider />
+
+            <AnimatePresence mode="wait">
+                {activeFilter === "All" && projects[0] && (
+                    <motion.div
+                        key="featured-case-study"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        style={{ overflow: "hidden" }}
+                    >
+                        <FeaturedCaseStudy 
+                            project={projects[0]} 
+                            onView={() => setSelectedProject(projects[0])} 
+                        />
+                        <SectionDivider />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className={styles.projectList}>
+                <AnimatePresence mode="wait">
+                    {filteredProjects.map((project, index) => (
                         <motion.div
                             key={project.id}
-                            className={`${styles.card} ${project.isReal ? styles.featuredCard : ""}`}
+                            className={styles.projectRow}
                             layout
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.4 }}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
                         >
-
-                            <div className={styles.thumbnailWrapper}>
-                                <Image
-                                    src={project.image}
-                                    alt={project.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                                <div className={styles.overlay}>
-                                    <button
-                                        className={styles.viewBtn}
-                                        onClick={() => project.details ? setSelectedProject(project) : null}
-                                    >
-                                        View Details
-                                    </button>
+                            <div className={styles.rowLeft}>
+                                <div className={styles.thumbnailWrapper}>
+                                    <Image
+                                        src={project.image}
+                                        alt={project.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    <div className={styles.overlay}>
+                                        <button
+                                            className={styles.viewBtn}
+                                            onClick={() => project.details ? setSelectedProject(project) : null}
+                                        >
+                                            View Details
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={styles.content}>
-                                <h3 className={styles.title}>{project.title}</h3>
-                                <p className={styles.description}>{project.description}</p>
-                                <div className={styles.techStack}>
-                                    {project.tech.map((t, i) => (
-                                        <span key={i} className={styles.tag}>{t}</span>
-                                    ))}
+
+                            <div className={styles.rowRight}>
+                                <div className={styles.projectNumber}>
+                                    0{index + 1}
                                 </div>
+                                <div className={styles.content}>
+                                    <h3 className={styles.title}>{project.title}</h3>
+                                    <p className={styles.description}>{project.description}</p>
+                                    <div className={styles.techStack}>
+                                        {project.tech.map((t, i) => (
+                                            <span key={i} className={styles.tag}>
+                                                {t}
+                                                {i < project.tech.length - 1 && <span className={styles.tagSeparator}> · </span>}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                <div className={styles.hoverArrow}>
+                                    <ArrowRight size={48} strokeWidth={1} />
+                                </div>
+
+                                {/* Divider line below each row */}
+                                <div className={styles.rowLine}></div>
                             </div>
                         </motion.div>
                     ))}
                 </AnimatePresence>
-            </motion.div>
+            </div>
+
+            <SectionDivider />
+
+            {/* Work In Progress Teasers */}
+            <WorkInProgress />
 
             {/* Modal */}
             <AnimatePresence>
@@ -284,5 +477,47 @@ export default function Projects() {
                 )}
             </AnimatePresence>
         </div>
+        
+        <SectionDivider />
+        
+        <Footer />
+        </>
+    );
+}
+
+function WorkInProgress() {
+    const teasers = [
+        { id: 1, text: "Classified", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" },
+        { id: 2, text: "In Progress", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" },
+    ];
+
+    return (
+        <section className={styles.wipSection}>
+            <div className={styles.wipHeader}>
+                <h2 className={styles.wipSectionTitle}>Coming Soon</h2>
+                <div className={styles.wipHeaderLine}></div>
+            </div>
+            <p className={styles.wipTeaserText}>Something new is being built.</p>
+            
+            <div className={styles.teaserGrid}>
+                {teasers.map((teaser) => (
+                    <motion.div 
+                        key={teaser.id}
+                        className={styles.teaserCard}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: teaser.id * 0.2 }}
+                    >
+                        <div className={styles.cardTexture} />
+                        <div className={styles.teaserOverlay} />
+                        <div className={styles.teaserContent}>
+                            <h3 className={styles.teaserText}>{teaser.text}</h3>
+                            <div className={styles.pulsingDot} />
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+        </section>
     );
 }

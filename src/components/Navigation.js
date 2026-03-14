@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
 import styles from "./Navigation.module.css";
 
 const Navigation = () => {
@@ -31,7 +31,12 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className={styles.nav}>
+      <motion.nav 
+        className={styles.nav}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
         <Link href="/" className={styles.logo}>
           Hasnain Imran
         </Link>
@@ -40,29 +45,29 @@ const Navigation = () => {
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
         >
-          <Menu size={28} />
+          <div className={styles.hamburger}>
+            <span></span>
+            <span></span>
+          </div>
         </button>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
             className={styles.menuOverlay}
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ type: "tween", duration: 0.6, ease: [0.7, 0, 0.3, 1] }}
           >
             <div className={styles.menuHeader}>
-              <Link href="/" className={styles.logo} onClick={() => setIsOpen(false)}>
-                Hasnain Imran
-              </Link>
               <button
                 className={styles.closeBtn}
                 onClick={() => setIsOpen(false)}
                 aria-label="Close menu"
               >
-                <X size={32} />
+                <X size={44} strokeWidth={1} />
               </button>
             </div>
 
@@ -70,15 +75,17 @@ const Navigation = () => {
               {links.map((link, i) => (
                 <motion.li
                   key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
+                  className={styles.menuItem}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + (i * 0.1), duration: 0.4 }}
+                  transition={{ delay: 0.3 + (i * 0.1), duration: 0.6, ease: [0.2, 0.65, 0.3, 0.9] }}
                 >
                   <Link
                     href={link.href}
                     className={`${styles.menuLink} ${pathname === link.href ? styles.menuLinkActive : ""}`}
                   >
-                    {link.name}
+                    <span className={styles.linkNumber}>0{i + 1}</span>
+                    <span className={styles.linkText}>{link.name}</span>
                   </Link>
                 </motion.li>
               ))}

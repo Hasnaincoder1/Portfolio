@@ -22,9 +22,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-      <body style={{ paddingTop: "70px" }}>
+      <body style={{ margin: 0 }}>
         <Navigation />
-        <main>{children}</main>
+        {children}
       </body>
     </html>
   );
