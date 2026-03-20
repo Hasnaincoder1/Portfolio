@@ -26,11 +26,14 @@ function ProjectCard({ project, index }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className={styles.projectImageWrapper}>
-        {/* Placeholder gradient block if no image is available, otherwise use Next Image */}
-        <div className={styles.projectImagePlaceholder}>
-           <div className={styles.imageOverlay}>
-              <span className={styles.overlayText}>View Project</span>
-           </div>
+        <Image 
+           src={project.image} 
+           alt={project.name} 
+           fill 
+           style={{ objectFit: 'cover' }} 
+        />
+        <div className={styles.imageOverlay}>
+           <span className={styles.overlayText}>View Project</span>
         </div>
       </div>
       
@@ -133,41 +136,35 @@ export default function Home() {
     }
   };
 
-  // Prevent spline watermark
+  // Aggressively strip all HTML UI overlays (buttons, navbars, text, watermarks) from the Spline container
   useEffect(() => {
-      function hideWatermark() {
-          const allElements = document.querySelectorAll('a, div, span, button, p');
-          for (const el of allElements) {
-              if (el.textContent?.includes('Built with Spline') ||
-                  el.querySelector?.('img[alt*="spline" i]') ||
-                  el.getAttribute?.('href')?.includes('spline.design')) {
-                  el.style.setProperty('display', 'none', 'important');
-                  return true;
-              }
-          }
-          const iframes = document.querySelectorAll('iframe');
-          for (const iframe of iframes) {
-              try {
-                  const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                  if (iframeDoc) {
-                      const els = iframeDoc.querySelectorAll('a, div, span, button');
-                      for (const el of els) {
-                          if (el.textContent?.includes('Built with Spline') ||
-                              el.getAttribute?.('href')?.includes('spline.design')) {
-                              el.style.setProperty('display', 'none', 'important');
-                              return true;
-                          }
+      function cleanSplineUI() {
+          const canvases = document.querySelectorAll('canvas');
+          let cleaned = false;
+          
+          canvases.forEach(canvas => {
+              const splineWrapper = canvas.parentElement;
+              if (splineWrapper) {
+                  // Hide every peer element next to the canvas (these are the HTML UI overlays/watermarks/navbars)
+                  Array.from(splineWrapper.children).forEach(child => {
+                      if (child.tagName.toLowerCase() !== 'canvas') {
+                          child.style.setProperty('display', 'none', 'important');
+                          child.style.setProperty('opacity', '0', 'important');
+                          child.style.setProperty('pointer-events', 'none', 'important');
+                          cleaned = true;
                       }
-                  }
-              } catch (e) { /* cross-origin iframe, skip */ }
-          }
-          return false;
+                  });
+              }
+          });
+          return cleaned;
       }
 
       let attempts = 0;
       const interval = setInterval(() => {
           attempts++;
-          if (hideWatermark() || attempts > 60) {
+          cleanSplineUI();
+          // Keep checking repeatedly because Spline injects UI elements asynchronously after WebGL loads
+          if (attempts > 15) {
               clearInterval(interval);
           }
       }, 500);
@@ -183,21 +180,21 @@ export default function Home() {
       name: "Nebula AI",
       description: "An AI-powered conversational interface designed for absolute minimalism and focused human interaction.",
       link: "/projects",
-      image: "/project-1.jpg" // Placeholder path, using CSS gradient in markup for now
+      image: "/handshake.avif"
     },
     {
       id: 2,
       name: "Aura Commerce",
       description: "A high-conversion headless e-commerce storefront focusing on editorial layouts and fast checkout flows.",
       link: "/projects",
-      image: "/project-2.jpg"
+      image: "/commitment.avif"
     },
     {
       id: 3,
       name: "Velocity Dashboard",
       description: "A dark-mode financial analytics dashboard bringing clarity to complex real-time data ecosystems.",
       link: "/projects",
-      image: "/project-3.jpg"
+      image: "/result.avif"
     }
   ];
 
@@ -235,8 +232,10 @@ export default function Home() {
         style={{ y: bgY }}
       >
         <div className={styles.splineContainer}>
-          {/* Note: If 6Wq1Q7YGyM-iab9i is an invalid scene, it will render transparently. */}
-          <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" />
+          <Spline 
+            scene="https://prod.spline.design/4GxCiBNhmKrDtxrl/scene.splinecode" 
+            style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0, margin: 0, padding: 0, maxWidth: "none" }}
+          />
         </div>
       </motion.div>
 

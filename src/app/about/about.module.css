@@ -68,20 +68,19 @@
     font-family: var(--font-outfit), "Inter", sans-serif;
     font-size: clamp(4rem, 12vw, 14rem);
     font-weight: 700;
-    color: #E6DECE; /* Gold/Cream */
+    color: #ffffff; /* Off-white / white */
     text-transform: uppercase;
     letter-spacing: -0.02em;
     line-height: 0.85;
     margin: 0;
+    margin-bottom: 2rem; /* Separates the heading from the content */
     text-align: left;
 }
 
-.headingLine {
+.whoIAmDivider {
     width: 100%;
-    height: 1px;
-    background-color: #E6DECE;
-    opacity: 0.3;
-    margin: 2rem 0 6rem 0;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 4rem;
 }
 
 .profileContent {
@@ -97,14 +96,17 @@
     height: 55vh; /* Tall editorial portrait */
     border-radius: 0; /* No radius as requested */
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 80%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 80%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 }
 
 .textContent {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    padding-top: 2rem;
+    padding-top: 0;
 }
 
 .quoteText {

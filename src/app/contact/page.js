@@ -31,6 +31,43 @@ const SplitText = ({ children }) => {
 };
 
 export default function Contact() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+        
+        const formData = new FormData(e.target);
+        
+        // This key safely routes the submission to your email
+        formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "YOUR_ACCESS_KEY_HERE");
+        formData.append("subject", "New Submission from Portfolio");
+        formData.append("from_name", "Portfolio Contact Form");
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                setSubmitStatus("success");
+                e.target.reset();
+            } else {
+                console.error("Form error:", data);
+                setSubmitStatus("error");
+            }
+        } catch (error) {
+            console.error("Submission failed:", error);
+            setSubmitStatus("error");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     useEffect(() => {
         function hideWatermark() {
             // Search all elements for "Built with Spline" text
@@ -111,7 +148,7 @@ export default function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
                 >
-                    I AM CURRENTLY AVAILABLE FOR FREELANCE AND FULL-TIME OPPORTUNITIES.
+                    I AM CURRENTLY AVAILABLE FOR FREELANCE AND PART-TIME OPPORTUNITIES.
                 </motion.p>
                 <motion.div 
                     className={styles.collaborateDivider}
@@ -171,55 +208,7 @@ export default function Contact() {
 
                 {/* Contact content on the right */}
                 <div className={styles.contactContent}>
-                    <motion.div
-                        className={styles.infoSection}
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3, duration: 0.8 }}
-                    >
-                        <div className={styles.socialLinks}>
-                            <a href="mailto:hasnainimran2005@gmail.com" className={styles.socialRow}>
-                                <div className={styles.rowLeft}>
-                                    <Mail size={24} />
-                                </div>
-                                <div className={styles.rowMiddle}>
-                                    hasnainimran2005@gmail.com
-                                </div>
-                                <div className={styles.rowRight}>
-                                    <ArrowRight size={20} />
-                                </div>
-                            </a>
-                            
-                            <a
-                                href="https://www.linkedin.com/in/hasnain-imran-086853340/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.socialRow}
-                            >
-                                <div className={styles.rowLeft}>
-                                    <Linkedin size={24} />
-                                </div>
-                                <div className={styles.rowMiddle}>
-                                    LinkedIn Profile
-                                </div>
-                                <div className={styles.rowRight}>
-                                    <ArrowRight size={20} />
-                                </div>
-                            </a>
-                            
-                            <a href="tel:+923061202874" className={styles.socialRow}>
-                                <div className={styles.rowLeft}>
-                                    <Phone size={24} />
-                                </div>
-                                <div className={styles.rowMiddle}>
-                                    +92 306 120 2874
-                                </div>
-                                <div className={styles.rowRight}>
-                                    <ArrowRight size={20} />
-                                </div>
-                            </a>
-                        </div>
-                    </motion.div>
+
 
                     <motion.div
                         className={styles.formCard}
@@ -229,24 +218,31 @@ export default function Contact() {
                     >
                         <form
                             className={styles.form}
-                            onSubmit={(e) => e.preventDefault()}
+                            onSubmit={handleSubmit}
                         >
                             <div className={styles.group}>
                                 <label htmlFor="name">Full Name</label>
-                                <input type="text" id="name" className={styles.input} placeholder="" required />
+                                <input type="text" id="name" name="name" className={styles.input} required />
                             </div>
                             <div className={styles.group}>
                                 <label htmlFor="email">Email Address</label>
-                                <input type="email" id="email" className={styles.input} placeholder="" required />
+                                <input type="email" id="email" name="email" className={styles.input} required />
                             </div>
                             <div className={styles.group}>
                                 <label htmlFor="message">Your Message</label>
-                                <textarea id="message" className={styles.textarea} placeholder="" required></textarea>
+                                <textarea id="message" name="message" className={styles.textarea} required></textarea>
                             </div>
-                            <button type="submit" className={styles.submitBtn}>
-                                <span>Send</span>
-                                <ArrowRight size={18} />
+                            <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+                                <span>{isSubmitting ? "Sending..." : "Send"}</span>
+                                {!isSubmitting && <ArrowRight size={18} />}
                             </button>
+                            
+                            {submitStatus === "success" && (
+                                <p style={{ color: "#4ade80", marginTop: "1.5rem", fontSize: "0.95rem", textAlign: "center" }}>Message sent successfully! I'll get back to you soon.</p>
+                            )}
+                            {submitStatus === "error" && (
+                                <p style={{ color: "#f87171", marginTop: "1.5rem", fontSize: "0.95rem", textAlign: "center" }}>Something went wrong. Please try again or email me directly.</p>
+                            )}
                         </form>
                     </motion.div>
                 </div>
@@ -269,8 +265,8 @@ export default function Contact() {
                     {[
                         { name: "GitHub", url: "https://github.com/hasnaincoder1" },
                         { name: "LinkedIn", url: "https://www.linkedin.com/in/hasnain-imran-086853340/" },
-                        { name: "Instagram", url: "https://www.instagram.com/hasnain_imran_/" },
-                        { name: "Behance", url: "https://www.behance.net/hasnainimran1" }
+                        { name: "Instagram", url: "https://www.instagram.com/hasnainimrann/" },
+                        { name: "Fiverr", url: "https://www.fiverr.com/hasnainimrann" }
                     ].map((platform, idx) => (
                         <motion.div 
                             key={platform.name}
@@ -320,8 +316,8 @@ const FAQSection = ({ styles }) => {
             answer: "I typically respond within 24 hours."
         },
         {
-            question: "Are you open to full-time roles?",
-            answer: "Yes, I'm open to discussing full-time opportunities with companies that value innovation."
+            question: "Are you open to part-time roles?",
+            answer: "Yes, I'm open to discussing part-time opportunities with companies that value innovation."
         },
         {
             question: "What is your preferred way to collaborate?",

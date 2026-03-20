@@ -14,9 +14,9 @@ export default function Footer() {
           </Link>
           
           <div className={styles.socialLinks}>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.linkedin.com/in/hasnain-imran-086853340/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/hasnaincoder1" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://www.instagram.com/hasnainimrann/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
         

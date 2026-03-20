@@ -106,7 +106,7 @@ export default function About() {
     const stats = [
         { value: 5, suffix: "+", label: "Projects" },
         { value: 2, suffix: "", label: "Active Roles" },
-        { value: 2, suffix: "", label: "Years Coding" },
+        { value: 4, suffix: "", label: "Years Coding" },
         { value: 1, suffix: "", label: "Big Goal" },
     ];
 
@@ -141,16 +141,10 @@ export default function About() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    Who I Am
+                    WHO I AM
                 </motion.h1>
-                <motion.div 
-                    className={styles.headingLine}
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-                    style={{ transformOrigin: "left" }}
-                />
+
+                <div className={styles.whoIAmDivider} />
 
                 <div className={styles.profileContent}>
                     <motion.div 
@@ -187,6 +181,8 @@ export default function About() {
                     </motion.div>
                 </div>
             </section>
+
+
 
             <SectionDivider />
 
