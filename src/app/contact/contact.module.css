@@ -25,7 +25,7 @@
 
 .collaborateHeading {
     font-family: var(--font-outfit), sans-serif;
-    font-size: clamp(3rem, 8vw, 8rem);
+    font-size: clamp(2rem, 8vw, 8rem);
     font-weight: 800;
     line-height: 0.95;
     color: #ffffff;
@@ -422,6 +422,13 @@
     overflow: visible !important;
     width: 100% !important;
     height: 100% !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+}
+
+.splineWrapper canvas {
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
 }
 
 /* Right column: info + form stacked */
@@ -582,5 +589,19 @@
 
     .splineWrapper {
         height: 320px;
+    }
+
+    .availabilityBanner {
+        flex-direction: column;
+        height: auto;
+        padding: 1.5rem 2rem;
+        gap: 1rem;
+        align-items: center;
+        text-align: center;
+    }
+
+    .availabilityRight {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }

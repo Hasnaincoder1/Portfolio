@@ -476,16 +476,30 @@
 }
 
 @media (max-width: 768px) {
-    .profileSection {
+    .profileContent {
         grid-template-columns: 1fr;
         text-align: center;
     }
 
     .imageWrapper {
         margin: 0 auto;
+        min-height: 400px;
     }
 
     .sectionTitle {
         font-size: 1.5rem;
+    }
+
+    /* Stack experience and education rows so durations fit */
+    .expRow, .eduRow {
+        grid-template-columns: 70px 1fr;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+    }
+
+    .rowRight {
+        grid-column: 1 / -1;
+        align-items: flex-start;
+        text-align: left;
     }
 }
