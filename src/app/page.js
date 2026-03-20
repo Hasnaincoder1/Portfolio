@@ -234,7 +234,7 @@ export default function Home() {
         <div className={styles.splineContainer}>
           <Spline 
             scene="https://prod.spline.design/4GxCiBNhmKrDtxrl/scene.splinecode" 
-            style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0, margin: 0, padding: 0, maxWidth: "none" }}
+            style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, margin: 0, padding: 0, maxWidth: "none" }}
           />
         </div>
       </motion.div>
