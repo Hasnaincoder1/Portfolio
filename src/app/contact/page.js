@@ -69,42 +69,16 @@ export default function Contact() {
     };
 
     useEffect(() => {
-        function hideWatermark() {
-            // Search all elements for "Built with Spline" text
-            const allElements = document.querySelectorAll('a, div, span, button, p');
-            for (const el of allElements) {
-                if (el.textContent?.includes('Built with Spline') ||
-                    el.querySelector?.('img[alt*="spline" i]') ||
-                    el.getAttribute?.('href')?.includes('spline.design')) {
-                    el.style.setProperty('display', 'none', 'important');
-                    return true;
-                }
-            }
-            // Also check inside iframes
-            const iframes = document.querySelectorAll('iframe');
-            for (const iframe of iframes) {
-                try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                    if (iframeDoc) {
-                        const els = iframeDoc.querySelectorAll('a, div, span, button');
-                        for (const el of els) {
-                            if (el.textContent?.includes('Built with Spline') ||
-                                el.getAttribute?.('href')?.includes('spline.design')) {
-                                el.style.setProperty('display', 'none', 'important');
-                                return true;
-                            }
-                        }
-                    }
-                } catch (e) { /* cross-origin iframe, skip */ }
-            }
-            return false;
-        }
-
-        // Keep trying every 500ms until found (max 30s)
         let attempts = 0;
         const interval = setInterval(() => {
             attempts++;
-            if (hideWatermark() || attempts > 60) {
+            // Highly targeted selector, zero thread blocking
+            const splineLink = document.querySelector('a[href*="spline.design"]');
+            if (splineLink) {
+                splineLink.style.setProperty('display', 'none', 'important');
+                clearInterval(interval);
+            }
+            if (attempts > 30) {
                 clearInterval(interval);
             }
         }, 500);

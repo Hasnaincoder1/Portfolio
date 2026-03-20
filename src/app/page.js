@@ -136,35 +136,25 @@ export default function Home() {
     }
   };
 
-  // Aggressively strip all HTML UI overlays (buttons, navbars, text, watermarks) from the Spline container
+  // Optimized targeted strip of Spline UI overlays
   useEffect(() => {
-      function cleanSplineUI() {
+      let attempts = 0;
+      const interval = setInterval(() => {
+          attempts++;
           const canvases = document.querySelectorAll('canvas');
-          let cleaned = false;
-          
+          let found = false;
           canvases.forEach(canvas => {
               const splineWrapper = canvas.parentElement;
-              if (splineWrapper) {
-                  // Hide every peer element next to the canvas (these are the HTML UI overlays/watermarks/navbars)
+              if (splineWrapper && splineWrapper.children.length > 1) {
                   Array.from(splineWrapper.children).forEach(child => {
                       if (child.tagName.toLowerCase() !== 'canvas') {
                           child.style.setProperty('display', 'none', 'important');
-                          child.style.setProperty('opacity', '0', 'important');
-                          child.style.setProperty('pointer-events', 'none', 'important');
-                          cleaned = true;
+                          found = true;
                       }
                   });
               }
           });
-          return cleaned;
-      }
-
-      let attempts = 0;
-      const interval = setInterval(() => {
-          attempts++;
-          cleanSplineUI();
-          // Keep checking repeatedly because Spline injects UI elements asynchronously after WebGL loads
-          if (attempts > 15) {
+          if (found || attempts > 20) {
               clearInterval(interval);
           }
       }, 500);
@@ -229,7 +219,7 @@ export default function Home() {
       {/* Parallax Background Layer */}
       <motion.div
         className={styles.backgroundLayer}
-        style={{ y: bgY }}
+        style={{ y: bgY, willChange: "transform" }}
       >
         <div className={styles.splineContainer}>
           <Spline 
@@ -243,7 +233,7 @@ export default function Home() {
       <main className={styles.main}>
         <motion.div
           className={styles.heroContent}
-          style={{ y: textY }}
+          style={{ y: textY, willChange: "transform" }}
         >
           <motion.h1
             className={styles.name}
